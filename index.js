@@ -1,4 +1,5 @@
 "use strict";
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -6,6 +7,8 @@ Object.defineProperty(exports, "__esModule", {
 exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
+
+require("./src/styles.css");
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
@@ -38,20 +41,124 @@ var DummyComponent = /*#__PURE__*/function (_Component) {
 
   var _super = _createSuper(DummyComponent);
 
-  function DummyComponent() {
+  function DummyComponent(props) {
+    var _this;
+
     _classCallCheck(this, DummyComponent);
 
-    return _super.apply(this, arguments);
+    _this = _super.call(this, props);
+
+    _this.handleClickOutside = function (e) {
+      if (!e.target.classList.contains('custom-select-option') && !e.target.classList.contains('selected-text')) {
+        _this.setState({
+          showOptionList: false
+        });
+      }
+    };
+
+    _this.handleListDisplay = function () {
+      _this.setState(function (prevState) {
+        return {
+          showOptionList: !prevState.showOptionList
+        };
+      });
+    };
+
+    _this.handleOptionClick = function (e) {
+      _this.setState({
+        defaultSelectText: e.target.getAttribute('data-name'),
+        showOptionList: false,
+        value: ''
+      });
+    };
+
+    _this.handleValueChange = function (e) {
+      var optionsList = _this.state.originalList.filter(function (word) {
+        return word.toLowerCase().startsWith(e.target.value.toLowerCase());
+      });
+
+      _this.setState({
+        value: e.target.value,
+        optionsList: optionsList
+      });
+    };
+
+    _this.state = {
+      defaultSelectText: 'Select...',
+      showOptionList: false,
+      originalList: [],
+      optionsList: [],
+      value: ''
+    };
+    return _this;
   }
 
   _createClass(DummyComponent, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      // Add Event Listner to handle the click that happens outside
+      // the Custom Select Container
+      document.addEventListener('mousedown', this.handleClickOutside);
+      var list = []; // Check if input is Array or Object
+
+      if (Array.isArray(this.props.option)) {
+        list = this.props.option;
+      } else {
+        for (var key in this.props.option) {
+          list.push(this.props.option[key]);
+        }
+      }
+
+      this.setState({
+        originalList: list
+      });
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      // Remove the event listner on component unmounting
+      document.removeEventListener('mousedown', this.handleClickOutside);
+    } // This method handles the click that happens outside the
+    // select text and list area
+
+  }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/_react["default"].createElement("div", null, "I am a dummy react npm module");
+      var _this2 = this;
+
+      var _this$state = this.state,
+          originalList = _this$state.originalList,
+          optionsList = _this$state.optionsList;
+      var _this$state2 = this.state,
+          showOptionList = _this$state2.showOptionList,
+          defaultSelectText = _this$state2.defaultSelectText;
+      return /*#__PURE__*/_react["default"].createElement("div", {
+        className: document.activeElement.className.split(' ').indexOf('text-box') > -1 ? 'custom-select-container active' : 'custom-select-container'
+      }, /*#__PURE__*/_react["default"].createElement("div", {
+        className: "selected-text",
+        onClick: this.handleListDisplay
+      }, /*#__PURE__*/_react["default"].createElement("input", {
+        type: "text",
+        className: this.state.defaultSelectText === 'Select...' ? 'text-box' : 'text-box active',
+        value: this.state.value,
+        onChange: this.handleValueChange,
+        placeholder: defaultSelectText
+      }), /*#__PURE__*/_react["default"].createElement("div", {
+        className: "arrow"
+      })), showOptionList && /*#__PURE__*/_react["default"].createElement("ul", {
+        className: "select-options"
+      }, (this.state.value.length === 0 ? originalList : optionsList).map(function (option) {
+        return /*#__PURE__*/_react["default"].createElement("li", {
+          className: _this2.state.defaultSelectText === option ? 'custom-select-option active' : 'custom-select-option',
+          "data-name": option,
+          onClick: _this2.handleOptionClick
+        }, option);
+      })));
     }
   }]);
 
   return DummyComponent;
 }(_react.Component);
 
-exports["default"] = DummyComponent;
+var _default = DummyComponent;
+exports["default"] = _default;
