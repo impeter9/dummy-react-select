@@ -6,6 +6,8 @@ Create a custom select module.
 
 ## Result
 
+![Imgur Image](./dummy-react-select-demo.gif)
+
 ## Usage
 
 Clone the repository on your local machine.
