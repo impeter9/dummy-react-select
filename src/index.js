@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
-import './src/styles.css';
+import SearchList from './components/SearchList';
+
+import './styles.css';
 
 class DummyComponent extends Component {
   constructor(props) {
@@ -94,9 +96,7 @@ class DummyComponent extends Component {
           <input
             type='text'
             className={
-              this.state.defaultSelectText === 'Select...'
-                ? 'text-box'
-                : 'text-box active'
+              defaultSelectText === 'Select...' ? 'text-box' : 'text-box active'
             }
             value={this.state.value}
             onChange={this.handleValueChange}
@@ -104,27 +104,26 @@ class DummyComponent extends Component {
           />
           <div className='arrow'></div>
         </div>
-        {showOptionList && (
-          <ul className='select-options'>
-            {(this.state.value.length === 0 ? originalList : optionsList).map(
-              (option) => {
-                return (
-                  <li
-                    className={
-                      this.state.defaultSelectText === option
-                        ? 'custom-select-option active'
-                        : 'custom-select-option'
-                    }
-                    data-name={option}
-                    onClick={this.handleOptionClick}
-                  >
-                    {option}
-                  </li>
-                );
-              }
-            )}
-          </ul>
-        )}
+        {showOptionList &&
+          (this.state.value.length === 0 ? (
+            <SearchList
+              list={originalList}
+              defaultSelectText={defaultSelectText}
+              handleOptionClick={this.handleOptionClick}
+            />
+          ) : optionsList.length === 0 ? (
+            <SearchList
+              list={[]}
+              defaultSelectText={defaultSelectText}
+              handleOptionClick={this.handleOptionClick}
+            />
+          ) : (
+            <SearchList
+              list={optionsList}
+              defaultSelectText={defaultSelectText}
+              handleOptionClick={this.handleOptionClick}
+            />
+          ))}
       </div>
     );
   }

@@ -1,4 +1,32 @@
 "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+require("./SearchList.css");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var searchList = function searchList(props) {
+  return /*#__PURE__*/_react["default"].createElement("ul", {
+    className: "select-options"
+  }, props.list.length === 0 ? /*#__PURE__*/_react["default"].createElement("li", {
+    className: 'no-options-list'
+  }, "No options") : props.list.map(function (option) {
+    return /*#__PURE__*/_react["default"].createElement("li", {
+      className: props.defaultSelectText === option ? 'custom-select-option active' : 'custom-select-option',
+      "data-name": option,
+      onClick: props.handleOptionClick
+    }, option);
+  }));
+};
+
+var _default = searchList;
+exports["default"] = _default;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8,7 +36,11 @@ exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
+var _SearchList = _interopRequireDefault(require("./src/components/SearchList.jsx"));
+
 require("./src/styles.css");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
@@ -124,8 +156,6 @@ var DummyComponent = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
-
       var _this$state = this.state,
           originalList = _this$state.originalList,
           optionsList = _this$state.optionsList;
@@ -139,20 +169,24 @@ var DummyComponent = /*#__PURE__*/function (_Component) {
         onClick: this.handleListDisplay
       }, /*#__PURE__*/_react["default"].createElement("input", {
         type: "text",
-        className: this.state.defaultSelectText === 'Select...' ? 'text-box' : 'text-box active',
+        className: defaultSelectText === 'Select...' ? 'text-box' : 'text-box active',
         value: this.state.value,
         onChange: this.handleValueChange,
         placeholder: defaultSelectText
       }), /*#__PURE__*/_react["default"].createElement("div", {
         className: "arrow"
-      })), showOptionList && /*#__PURE__*/_react["default"].createElement("ul", {
-        className: "select-options"
-      }, (this.state.value.length === 0 ? originalList : optionsList).map(function (option) {
-        return /*#__PURE__*/_react["default"].createElement("li", {
-          className: _this2.state.defaultSelectText === option ? 'custom-select-option active' : 'custom-select-option',
-          "data-name": option,
-          onClick: _this2.handleOptionClick
-        }, option);
+      })), showOptionList && (this.state.value.length === 0 ? /*#__PURE__*/_react["default"].createElement(_SearchList["default"], {
+        list: originalList,
+        defaultSelectText: defaultSelectText,
+        handleOptionClick: this.handleOptionClick
+      }) : optionsList.length === 0 ? /*#__PURE__*/_react["default"].createElement(_SearchList["default"], {
+        list: [],
+        defaultSelectText: defaultSelectText,
+        handleOptionClick: this.handleOptionClick
+      }) : /*#__PURE__*/_react["default"].createElement(_SearchList["default"], {
+        list: optionsList,
+        defaultSelectText: defaultSelectText,
+        handleOptionClick: this.handleOptionClick
       })));
     }
   }]);

@@ -2,10 +2,11 @@
   "name": "dummy-react-select",
   "version": "1.0.0",
   "description": "A dummy react select npm module",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "./node_modules/.bin/babel src --out-file index.js"
+    "start": "webpack --watch",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -21,12 +22,22 @@
     "react": "^16.6.1",
     "react-dom": "^16.6.3"
   },
+  "dependencies": {
+    "react": "^15.5.4",
+    "webpack": "^4.44.1"
+  },
   "devDependencies": {
-    "@babel/cli": "^7.10.5",
-    "@babel/core": "^7.11.1",
-    "@babel/preset-env": "^7.11.0",
-    "@babel/preset-react": "^7.10.4",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.5.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "css-loader": "^4.2.1",
+    "style-loader": "^1.2.1",
+    "webpack-cli": "^3.3.12"
   }
 }
